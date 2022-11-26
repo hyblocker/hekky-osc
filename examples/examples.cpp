@@ -4,12 +4,23 @@
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    // Open a UDP socket, pointing to localhost on port 9000
+    auto udpSender = hekky::osc::UdpSender("127.0.0.1", 9000);
 
-    osc::helloTest();
+    // Temporary OSC packet, we will have methods to construct these later
+    constexpr char buffer[] = {
+        47, 116, 101, 115, 116, 47, 111, 110, 101, 0, 0, 0, // /test/one
+        44, 105, 0, 0,                                      // ,i
+        00, 00, 00, 12,                                     // 12
+    };
+    udpSender.Send((char*)buffer, sizeof(buffer));
 
-    std::cin.get();
+    // Closing it manually isn't needed, it gets closed via the destructor automatically!
+    // udpSender.Close();
 
+    std::cout << "Done!\n";
+
+    // Goal is to be able to do something similar with relative ease.
     /*
     
     internal static class VrcOscHell

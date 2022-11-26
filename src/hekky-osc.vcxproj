@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="..\include\hekky-osc.hpp" />
     <ClInclude Include="..\include\hekky\osc\asserts.hpp" />
+    <ClInclude Include="..\include\hekky\osc\debug.hpp" />
     <ClInclude Include="..\include\hekky\osc\platform.hpp" />
     <ClInclude Include="..\include\hekky\osc\udpsender.hpp" />
     <ClInclude Include="..\include\hekky\osc\utils.hpp" />

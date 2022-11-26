@@ -102,6 +102,10 @@ namespace hekky {
             HEKKYOSC_ASSERT(m_nativeSocket != INVALID_SOCKET, "Tried sending a packet, but the native socket is null! Has the socket been initialized?");
             HEKKYOSC_ASSERT(m_isAlive == true, "Tried sending a packet, but the server isn't running!");
 
+            // Skip if the data is 0 or somehow negative (should be theoretically impossible since this is an unsigned integer)
+            if (size < 1)
+                return;
+
             // Send data over the socket
             sendto(m_nativeSocket, data, size, 0, (sockaddr*)&m_destinationAddress, sizeof(m_destinationAddress));
 #endif

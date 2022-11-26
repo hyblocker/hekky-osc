@@ -144,6 +144,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="hekky-osc.cpp" />
+    <ClCompile Include="udpsender.cpp" />
+    <ClCompile Include="utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\hekky-osc.hpp" />
+    <ClInclude Include="..\include\hekky\osc\asserts.hpp" />
+    <ClInclude Include="..\include\hekky\osc\platform.hpp" />
+    <ClInclude Include="..\include\hekky\osc\udpsender.hpp" />
+    <ClInclude Include="..\include\hekky\osc\utils.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,9 +1,7 @@
-#include <iostream>
+#include "hekky-osc.hpp"
 
-namespace osc {
+namespace hekky {
+	namespace osc {
 
-	void helloTest()
-	{
-		std::cout << "Hello from OSC!" << std::endl;
 	}
 }

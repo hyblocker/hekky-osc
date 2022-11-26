@@ -2,6 +2,8 @@
 
 #include "hekky/osc/platform.hpp"
 #include "hekky/osc/asserts.hpp"
+#include "hekky/osc/oscpacket.hpp"
+#include "hekky/osc/oscmessage.hpp"
 
 #include <string>
 
@@ -53,6 +55,7 @@ namespace hekky {
 			/// <param name="size">The size of the buffer</param>
 			void Send(char* data, uint64_t size);
 
+			void Send(OscPacket& message);
 		private:
 			bool m_isAlive;
 			std::string m_address;

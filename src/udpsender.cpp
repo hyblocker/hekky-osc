@@ -110,5 +110,18 @@ namespace hekky {
             sendto(m_nativeSocket, data, size, 0, (sockaddr*)&m_destinationAddress, sizeof(m_destinationAddress));
 #endif
         }
+
+        void UdpSender::Send(OscPacket& packet) {
+#ifdef HEKKYOSC_WINDOWS
+            HEKKYOSC_ASSERT(m_nativeSocket != INVALID_SOCKET, "Tried sending a packet, but the native socket is null! Has the socket been initialized?");
+            HEKKYOSC_ASSERT(m_isAlive == true, "Tried sending a packet, but the server isn't running!");
+
+            uint64_t size = 0;
+            char* data = packet.GetBytes(size);
+
+            // Send data over the socket
+            Send(data, size);
+#endif
+        }
     }
 }

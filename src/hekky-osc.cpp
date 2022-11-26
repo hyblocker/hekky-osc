@@ -1,11 +1,6 @@
-// hekky-osc.cpp : Defines the functions for the static library.
-//
+#include <iostream>
 
-#include "pch.h"
-#include "framework.h"
-
-// TODO: This is an example of a library function
-void fnhekkyosc()
+void helloTest()
 {
-
+	std::cout << "Hello from OSC!" << std::endl;
 }

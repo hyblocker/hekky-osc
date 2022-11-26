@@ -35,3 +35,6 @@
 
 # Visual Studio
 *.user
+
+x64/
+Win32/

@@ -1,6 +1,9 @@
 #include <iostream>
 
-void helloTest()
-{
-	std::cout << "Hello from OSC!" << std::endl;
+namespace osc {
+
+	void helloTest()
+	{
+		std::cout << "Hello from OSC!" << std::endl;
+	}
 }

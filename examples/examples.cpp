@@ -4,6 +4,10 @@
 
 int main()
 {
+
+    srand(time(0));
+
+
     // Open a UDP socket, pointing to localhost on port 9000
     auto udpSender = hekky::osc::UdpSender("127.0.0.1", 9000);
 
@@ -14,6 +18,21 @@ int main()
         00, 00, 00, 12,                                     // 12
     };
     udpSender.Send((char*)buffer, sizeof(buffer));
+
+    auto message3 = hekky::osc::OscMessage("/test/one");
+    message3.Push(12);
+    udpSender.Send(message3);
+
+    auto message = hekky::osc::OscMessage("/tracking/trackers/1/position");
+    message.Push( (1000.f + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1001.f - 1000.f)))) / 1000.f );
+    message.Push( (1000.f + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1001.f - 1000.f)))) / 1000.f );
+    message.Push( (1000.f + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1001.f - 1000.f)))) / 1000.f );
+    udpSender.Send(message);
+
+    auto message2 = hekky::osc::OscMessage("/osc/some/endpoint");
+    message2.Push("Wonderhoy!");
+    message2.Push(5);
+    udpSender.Send(message2);
 
     // Closing it manually isn't needed, it gets closed via the destructor automatically!
     // udpSender.Close();

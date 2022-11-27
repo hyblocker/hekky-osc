@@ -7,6 +7,11 @@ namespace hekky {
 			if (len <= string.length()) len += 4;
 			return len;
 		}
+		uint64_t GetAlignedStringLength(const std::wstring& string) {
+			uint64_t len = string.length() + (4 - string.length() % 4);
+			if (len <= string.length()) len += 4;
+			return len;
+		}
 
 		bool IsLittleEndian() {
 			union {

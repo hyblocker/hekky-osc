@@ -10,6 +10,12 @@ namespace hekky {
 		/// <param name="string"></param>
 		/// <returns></returns>
 		uint64_t GetAlignedStringLength(const std::string& string);
+		/// <summary>
+		/// Returns the length of a string, rounded to the nearest 32 bytes, to conform with the OSC protocol.
+		/// </summary>
+		/// <param name="string"></param>
+		/// <returns></returns>
+		uint64_t GetAlignedStringLength(const std::wstring& string);
 
 		/// <summary>
 		/// Returns whether the current system is using Big Endian or Little-Endian

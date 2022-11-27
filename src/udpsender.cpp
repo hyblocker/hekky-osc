@@ -4,6 +4,10 @@ namespace hekky {
     namespace osc {
         uint64_t UdpSender::m_openSockets = 0;
 
+        const bool UdpSender::IsAlive() {
+            return m_isAlive;
+        }
+
         UdpSender::UdpSender(const std::string& ipAddress, uint32_t port, OSC_NetworkProtocol protocol)
             : m_address(ipAddress), m_port(port), m_destinationAddress({0}), m_localAddress({0})
 #ifdef HEKKYOSC_WINDOWS

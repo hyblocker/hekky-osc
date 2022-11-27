@@ -56,6 +56,11 @@ namespace hekky {
 			/// </summary>
 			/// <param name="message">The OSC packet to send</param>
 			void Send(OscPacket& message);
+
+			/// <summary>
+			/// Returns whether the server is alive or not
+			/// </summary>
+			const bool IsAlive();
 		private:
 			/// <summary>
 			/// Sends a buffer of data over this UDP socket.

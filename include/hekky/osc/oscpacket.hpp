@@ -9,7 +9,7 @@ namespace hekky {
 		public:
 
 		private:
-			virtual char* GetBytes(uint64_t& size) = 0;
+			virtual char* GetBytes(int& size) = 0;
 
 			friend class UdpSender;
 		};

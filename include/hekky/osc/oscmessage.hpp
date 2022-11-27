@@ -16,6 +16,14 @@ namespace hekky {
 
 			void Push(float data);
 			void Push(int data);
+			void Push(std::string data);
+			void Push(const std::string& data);
+			void Push(char* data);
+			void Push(const char* data);
+			void Push(std::wstring data);
+			void Push(const std::wstring& data);
+			void Push(wchar_t* data);
+			void Push(const wchar_t* data);
 
 			template<typename T>
 			void Push(T data) {
@@ -29,7 +37,7 @@ namespace hekky {
 			}
 
 		private:
-			char* GetBytes(uint64_t& size);
+			char* GetBytes(int& size);
 
 		private:
 			bool m_readonly;

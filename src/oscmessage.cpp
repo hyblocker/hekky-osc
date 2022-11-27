@@ -1,5 +1,6 @@
 #include "hekky/osc/oscmessage.hpp"
 #include "hekky/osc/utils.hpp"
+#include <math.h>
 
 namespace hekky {
 	namespace osc {
@@ -16,17 +17,21 @@ namespace hekky {
 		void OscMessage::Push(float data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
-			union {
-				float f;
-				char c[4];
-			} primitiveLiteral = { data };
+			if (isinf(data)) {
+				m_type += "I";
+			} else {
+				union {
+					float f;
+					char c[4];
+				} primitiveLiteral = { data };
 
-			if (utils::IsLittleEndian()) {
-				primitiveLiteral.f = utils::SwapFloat32(data);
+				if (utils::IsLittleEndian()) {
+					primitiveLiteral.f = utils::SwapFloat32(data);
+				}
+
+				m_data.insert(m_data.end(), primitiveLiteral.c, primitiveLiteral.c + 4);
+				m_type += "f";
 			}
-
-			m_data.insert(m_data.end(), primitiveLiteral.c, primitiveLiteral.c + 4);
-			m_type += "f";
 		}
 
 		void OscMessage::Push(int data) {

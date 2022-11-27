@@ -2,6 +2,8 @@
 
 namespace hekky {
     namespace osc {
+        uint64_t UdpSender::m_openSockets = 0;
+
         UdpSender::UdpSender(const std::string& ipAddress, uint32_t port, OSC_NetworkProtocol protocol)
             : m_address(ipAddress), m_port(port), m_destinationAddress({0}), m_localAddress({0})
 #ifdef HEKKYOSC_WINDOWS
@@ -10,11 +12,17 @@ namespace hekky {
         {
             m_isAlive = false;
 #ifdef HEKKYOSC_WINDOWS
-            // @TODO: Skip if other connections are open
-            int result = WSAStartup(MAKEWORD(2, 2), &m_wsaData);
-            if (result != 0) {
-                HEKKYOSC_ASSERT(result == 0, "WSAStartup failed");
-                return;
+            int result = 0;
+            if (m_openSockets < 1) {
+                WSADATA wsaData;
+                // @TODO: Skip if other connections are open
+                result = WSAStartup(MAKEWORD(2, 2), &wsaData);
+                if (result != 0) {
+                    HEKKYOSC_ASSERT(result == 0, "WSAStartup failed");
+                    return;
+                }
+
+                m_openSockets++;
             }
 
             // Get localhost as a native network address
@@ -91,9 +99,12 @@ namespace hekky {
             closesocket(m_nativeSocket);
 
             m_isAlive = false;
+            m_openSockets--;
 
-            // @TODO: Destroy if total connections == 0, use a static variable to keep track
-            WSACleanup();
+            if (m_openSockets < 1) {
+                // @TODO: Destroy if total connections == 0, use a static variable to keep track
+                WSACleanup();
+            }
 #endif
         }
 

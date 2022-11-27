@@ -67,8 +67,10 @@ namespace hekky {
 			bool m_isAlive;
 			std::string m_address;
 			uint32_t m_port;
+
+			static uint64_t m_openSockets;
+
 #ifdef HEKKYOSC_WINDOWS
-			WSADATA m_wsaData;
 			SOCKET m_nativeSocket;
 
 			sockaddr_in m_destinationAddress;

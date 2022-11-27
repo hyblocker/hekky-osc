@@ -12,12 +12,12 @@ int main()
     auto udpSender = hekky::osc::UdpSender("127.0.0.1", 9000);
 
     // Temporary OSC packet, we will have methods to construct these later
-    constexpr char buffer[] = {
-        47, 116, 101, 115, 116, 47, 111, 110, 101, 0, 0, 0, // /test/one
-        44, 105, 0, 0,                                      // ,i
-        00, 00, 00, 12,                                     // 12
-    };
-    udpSender.Send((char*)buffer, sizeof(buffer));
+    // constexpr char buffer[] = {
+    //     47, 116, 101, 115, 116, 47, 111, 110, 101, 0, 0, 0, // /test/one
+    //     44, 105, 0, 0,                                      // ,i
+    //     00, 00, 00, 12,                                     // 12
+    // };
+    // udpSender.Send((char*)buffer, sizeof(buffer));
 
     auto message3 = hekky::osc::OscMessage("/test/one");
     message3.Push(12);
@@ -31,8 +31,11 @@ int main()
 
     auto message2 = hekky::osc::OscMessage("/osc/some/endpoint");
     message2.Push("Wonderhoy!");
-    message2.Push(5);
     udpSender.Send(message2);
+
+    auto message4 = hekky::osc::OscMessage("/osc/some/endpoint");
+    message4.Push(5);
+    udpSender.Send(message4);
 
     // Closing it manually isn't needed, it gets closed via the destructor automatically!
     // udpSender.Close();

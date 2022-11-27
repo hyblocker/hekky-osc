@@ -14,19 +14,25 @@ namespace hekky {
 			OscMessage(const std::string& address);
 			~OscMessage();
 
-			void Push(float data);
-			void Push(int data);
-			void Push(std::string data);
-			void Push(const std::string& data);
-			void Push(char* data);
-			void Push(const char* data);
-			void Push(std::wstring data);
-			void Push(const std::wstring& data);
-			void Push(wchar_t* data);
-			void Push(const wchar_t* data);
+			// Floating point number
+			OscMessage* Push(float data);
+			// Integers
+			OscMessage* Push(int data);
+
+			// ASCII Strings
+			OscMessage* Push(std::string data);
+			OscMessage* Push(const std::string& data);
+			OscMessage* Push(char* data);
+			OscMessage* Push(const char* data);
+			
+			// Wide strings
+			OscMessage* Push(std::wstring data);
+			OscMessage* Push(const std::wstring& data);
+			OscMessage* Push(wchar_t* data);
+			OscMessage* Push(const wchar_t* data);
 
 			template<typename T>
-			void Push(T data) {
+			OscMessage* Push(T data) {
 				HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 				// @TODO: Actually encode data
@@ -34,6 +40,7 @@ namespace hekky {
 				// @NOTE: Probably going to treat generics as a binary blob
 				auto type = typeid(data).name();
 				std::cout << type << "\t\t" << data << std::endl;
+				return this;
 			}
 
 		private:

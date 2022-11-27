@@ -22,6 +22,9 @@
 namespace hekky {
 	namespace osc {
 
+		/// <summary>
+		/// Which protocol to use. Defaults to UDP.
+		/// </summary>
 		typedef enum {
 			UDP,
 			TCP,
@@ -49,13 +52,17 @@ namespace hekky {
 			void Close();
 
 			/// <summary>
+			/// Sends an OSC Packet over this UDP socket.
+			/// </summary>
+			/// <param name="message">The OSC packet to send</param>
+			void Send(OscPacket& message);
+		private:
+			/// <summary>
 			/// Sends a buffer of data over this UDP socket.
 			/// </summary>
 			/// <param name="data">A pointer to the buffer's data</param>
 			/// <param name="size">The size of the buffer</param>
-			void Send(char* data, uint64_t size);
-
-			void Send(OscPacket& message);
+			void Send(char* data, int size);
 		private:
 			bool m_isAlive;
 			std::string m_address;

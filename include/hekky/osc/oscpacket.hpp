@@ -14,6 +14,8 @@ namespace hekky {
 			friend class UdpSender;
 		};
 
-		const static uint64_t OSC_MINIMUM_PACKET_BYTES = 8;
+		namespace constants {
+			const static uint64_t OSC_MINIMUM_PACKET_BYTES = 8;
+		}
 	}
 }

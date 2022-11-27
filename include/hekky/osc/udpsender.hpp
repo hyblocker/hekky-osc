@@ -22,13 +22,15 @@
 namespace hekky {
 	namespace osc {
 
-		/// <summary>
-		/// Which protocol to use. Defaults to UDP.
-		/// </summary>
-		typedef enum {
-			UDP,
-			TCP,
-		} OSC_NetworkProtocol;
+		namespace network {
+			/// <summary>
+			/// Which protocol to use. Defaults to UDP.
+			/// </summary>
+			typedef enum {
+				UDP,
+				TCP,
+			} OSC_NetworkProtocol;
+		}
 
 		/// <summary>
 		/// A network device which sends packets to the specified destination using UDP.
@@ -40,7 +42,7 @@ namespace hekky {
 			/// </summary>
 			/// <param name="ipAddress">Destination IP Address</param>
 			/// <param name="port">Destination port</param>
-			UdpSender(const std::string& ipAddress, uint32_t port, OSC_NetworkProtocol protocol = OSC_NetworkProtocol::UDP);
+			UdpSender(const std::string& ipAddress, uint32_t port, network::OSC_NetworkProtocol protocol = network::OSC_NetworkProtocol::UDP);
 			/// <summary>
 			/// Destroys this UDP socket connection, if it's alive.
 			/// </summary>

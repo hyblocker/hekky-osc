@@ -6,7 +6,7 @@ namespace hekky {
 		OscMessage::OscMessage(const std::string& address)
 			: m_address(address), m_type(","), m_readonly(false)
 		{
-			m_data.reserve(OSC_MINIMUM_PACKET_BYTES);
+			m_data.reserve(constants::OSC_MINIMUM_PACKET_BYTES);
 		}
 
 		OscMessage::~OscMessage() {
@@ -21,8 +21,8 @@ namespace hekky {
 				char c[4];
 			} primitiveLiteral = { data };
 
-			if (IsLittleEndian()) {
-				primitiveLiteral.f = SwapFloat32(data);
+			if (utils::IsLittleEndian()) {
+				primitiveLiteral.f = utils::SwapFloat32(data);
 			}
 
 			m_data.insert(m_data.end(), primitiveLiteral.c, primitiveLiteral.c + 4);
@@ -37,8 +37,8 @@ namespace hekky {
 				char c[4];
 			} primitiveLiteral = { data };
 
-			if (IsLittleEndian()) {
-				primitiveLiteral.i = SwapInt32(data);
+			if (utils::IsLittleEndian()) {
+				primitiveLiteral.i = utils::SwapInt32(data);
 			}
 
 			m_data.insert(m_data.end(), primitiveLiteral.c, primitiveLiteral.c + 4);
@@ -49,7 +49,7 @@ namespace hekky {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			std::copy(data.begin(), data.end(), std::back_inserter(m_data));
-			m_data.insert(m_data.end(), GetAlignedStringLength(data) - data.length(), 0);
+			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - data.length(), 0);
 			m_type += "s";
 		}
 
@@ -57,7 +57,7 @@ namespace hekky {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			std::copy(data.begin(), data.end(), std::back_inserter(m_data));
-			m_data.insert(m_data.end(), GetAlignedStringLength(data) - data.length(), 0);
+			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - data.length(), 0);
 			m_type += "s";
 		}
 
@@ -65,7 +65,7 @@ namespace hekky {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			m_data.insert(m_data.end(), data, data + strlen(data));
-			m_data.insert(m_data.end(), GetAlignedStringLength(data) - strlen(data), 0);
+			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - strlen(data), 0);
 			m_type += "s";
 		}
 
@@ -73,7 +73,7 @@ namespace hekky {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			m_data.insert(m_data.end(), data, data + strlen(data));
-			m_data.insert(m_data.end(), GetAlignedStringLength(data) - strlen(data), 0);
+			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - strlen(data), 0);
 			m_type += "s";
 		}
 
@@ -81,7 +81,7 @@ namespace hekky {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			std::copy(data.begin(), data.end(), std::back_inserter(m_data));
-			m_data.insert(m_data.end(), GetAlignedStringLength(data) - data.length(), 0);
+			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - data.length(), 0);
 			m_type += "s";
 		}
 
@@ -89,7 +89,7 @@ namespace hekky {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			std::copy(data.begin(), data.end(), std::back_inserter(m_data));
-			m_data.insert(m_data.end(), GetAlignedStringLength(data) - data.length(), 0);
+			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - data.length(), 0);
 			m_type += "s";
 		}
 
@@ -97,7 +97,7 @@ namespace hekky {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			m_data.insert(m_data.end(), data, data + wcslen(data));
-			m_data.insert(m_data.end(), GetAlignedStringLength(data) - wcslen(data), 0);
+			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - wcslen(data), 0);
 			m_type += "s";
 		}
 
@@ -105,7 +105,7 @@ namespace hekky {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			m_data.insert(m_data.end(), data, data + wcslen(data));
-			m_data.insert(m_data.end(), GetAlignedStringLength(data) - wcslen(data), 0);
+			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - wcslen(data), 0);
 			m_type += "s";
 		}
 
@@ -114,11 +114,11 @@ namespace hekky {
 
 			// Append address
 			std::copy(m_address.begin(), m_address.end(), std::back_inserter(headerData));
-			headerData.insert(headerData.end(), GetAlignedStringLength(m_address) - m_address.length(), 0);
+			headerData.insert(headerData.end(), utils::GetAlignedStringLength(m_address) - m_address.length(), 0);
 
 			// Append types
 			std::copy(m_type.begin(), m_type.end(), std::back_inserter(headerData));
-			headerData.insert(headerData.end(), GetAlignedStringLength(m_type) - m_type.length(), 0);
+			headerData.insert(headerData.end(), utils::GetAlignedStringLength(m_type) - m_type.length(), 0);
 
 			// Add header to start of data block
 			m_data.insert(m_data.begin(), headerData.begin(), headerData.end());

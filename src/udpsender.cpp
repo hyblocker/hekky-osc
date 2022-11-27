@@ -8,7 +8,7 @@ namespace hekky {
             return m_isAlive;
         }
 
-        UdpSender::UdpSender(const std::string& ipAddress, uint32_t port, OSC_NetworkProtocol protocol)
+        UdpSender::UdpSender(const std::string& ipAddress, uint32_t port, network::OSC_NetworkProtocol protocol)
             : m_address(ipAddress), m_port(port), m_destinationAddress({0}), m_localAddress({0})
 #ifdef HEKKYOSC_WINDOWS
             , m_nativeSocket(INVALID_SOCKET)
@@ -63,7 +63,7 @@ namespace hekky {
             m_destinationAddress.sin_port = htons(port);
 
             // Open the network socket
-            m_nativeSocket = socket(AF_INET, SOCK_DGRAM, protocol == OSC_NetworkProtocol::UDP ? IPPROTO_UDP : IPPROTO_TCP);
+            m_nativeSocket = socket(AF_INET, SOCK_DGRAM, protocol == network::OSC_NetworkProtocol::UDP ? IPPROTO_UDP : IPPROTO_TCP);
             if (m_nativeSocket == INVALID_SOCKET) {
 #ifdef HEKKYOSC_DOASSERTS
                 int errorCode = WSAGetLastError();

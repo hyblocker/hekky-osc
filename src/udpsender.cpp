@@ -8,6 +8,8 @@ namespace hekky {
             return m_isAlive;
         }
 
+        UdpSender::UdpSender() : m_address(""), m_port(-1), m_destinationAddress({ 0 }), m_localAddress({ 0 }), m_isAlive(false) {}
+
         UdpSender::UdpSender(const std::string& ipAddress, uint32_t port, network::OSC_NetworkProtocol protocol)
             : m_address(ipAddress), m_port(port), m_destinationAddress({0}), m_localAddress({0})
 #ifdef HEKKYOSC_WINDOWS

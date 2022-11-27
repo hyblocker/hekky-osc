@@ -4,20 +4,10 @@
 
 int main()
 {
-
     srand(time(0));
-
 
     // Open a UDP socket, pointing to localhost on port 9000
     auto udpSender = hekky::osc::UdpSender("127.0.0.1", 9000);
-
-    // Temporary OSC packet, we will have methods to construct these later
-    // constexpr char buffer[] = {
-    //     47, 116, 101, 115, 116, 47, 111, 110, 101, 0, 0, 0, // /test/one
-    //     44, 105, 0, 0,                                      // ,i
-    //     00, 00, 00, 12,                                     // 12
-    // };
-    // udpSender.Send((char*)buffer, sizeof(buffer));
 
     auto message3 = hekky::osc::OscMessage("/test/one");
     message3.Push(12);

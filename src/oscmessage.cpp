@@ -125,7 +125,7 @@ namespace hekky {
 			
 			// Lock this packet
 			m_readonly = true;
-			size = m_data.size();
+			size = static_cast<int>(m_data.size());
 			return m_data.data();
 		}
 	}

@@ -3,7 +3,7 @@
 namespace hekky {
     namespace osc {
         UdpSender::UdpSender(const std::string& ipAddress, uint32_t port, OSC_NetworkProtocol protocol)
-            : m_address(ipAddress), m_port(port)
+            : m_address(ipAddress), m_port(port), m_destinationAddress({0}), m_localAddress({0})
 #ifdef HEKKYOSC_WINDOWS
             , m_nativeSocket(INVALID_SOCKET)
 #endif
@@ -97,7 +97,7 @@ namespace hekky {
 #endif
         }
 
-        void UdpSender::Send(char* data, uint64_t size) {
+        void UdpSender::Send(char* data, int size) {
 #ifdef HEKKYOSC_WINDOWS
             HEKKYOSC_ASSERT(m_nativeSocket != INVALID_SOCKET, "Tried sending a packet, but the native socket is null! Has the socket been initialized?");
             HEKKYOSC_ASSERT(m_isAlive == true, "Tried sending a packet, but the server isn't running!");
@@ -116,7 +116,7 @@ namespace hekky {
             HEKKYOSC_ASSERT(m_nativeSocket != INVALID_SOCKET, "Tried sending a packet, but the native socket is null! Has the socket been initialized?");
             HEKKYOSC_ASSERT(m_isAlive == true, "Tried sending a packet, but the server isn't running!");
 
-            uint64_t size = 0;
+            int size = 0;
             char* data = packet.GetBytes(size);
 
             // Send data over the socket

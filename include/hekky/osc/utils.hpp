@@ -32,11 +32,25 @@ namespace hekky {
 			uint32_t SwapInt32(uint32_t num);
 
 			/// <summary>
+			/// Swaps 8 bytes
+			/// </summary>
+			/// <param name="num">A 64-bit unsigned integer</param>
+			/// <returns>The same 64-bit unsigned integer, with the inverse endianness</returns>
+			uint64_t SwapInt64(uint64_t num);
+
+			/// <summary>
 			/// Swaps the order of bytes in a 32-bit floating point number
 			/// </summary>
 			/// <param name="num">A 32-bit floating point number</param>
 			/// <returns>The same 32-bit floating point number, with the inverse endianness</returns>
 			float SwapFloat32(float num);
+
+			/// <summary>
+			/// Swaps the order of bytes in a 64-bit floating point number
+			/// </summary>
+			/// <param name="num">A 64-bit floating point number</param>
+			/// <returns>The same 64-bit floating point number, with the inverse endianness</returns>
+			double SwapFloat64(double num);
 		}
 	}
 }

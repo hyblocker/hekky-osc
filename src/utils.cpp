@@ -37,6 +37,24 @@ namespace hekky {
 				swapper.ui32 = SwapInt32(swapper.ui32);
 				return swapper.f;
 			}
+
+			uint64_t SwapInt64(uint64_t num) {
+				num = (num & 0x00000000FFFFFFFF) << 32	| (num & 0xFFFFFFFF00000000) >> 32;
+				num = (num & 0x0000FFFF0000FFFF) << 16	| (num & 0xFFFF0000FFFF0000) >> 16;
+				num = (num & 0x00FF00FF00FF00FF) << 8	| (num & 0xFF00FF00FF00FF00) >> 8;
+				return num;
+			}
+
+			double SwapFloat64(double num) {
+
+				union {
+					double d;
+					uint64_t ui64;
+				} swapper = { num };
+
+				swapper.ui64 = SwapInt64(swapper.ui64);
+				return swapper.d;
+			}
 		}
 	}
 }

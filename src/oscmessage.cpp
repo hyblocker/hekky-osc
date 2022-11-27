@@ -14,6 +14,14 @@ namespace hekky {
 			m_data.clear();
 		}
 
+		OscMessage* OscMessage::Push(char* data, size_t size) {
+			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
+
+			m_data.insert(m_data.begin(), data, data + size);
+			m_type += "b";
+			return this;
+		}
+
 		OscMessage* OscMessage::Push(float data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
@@ -35,6 +43,27 @@ namespace hekky {
 			return this;
 		}
 
+		OscMessage* OscMessage::Push(double data) {
+			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
+
+			if (isinf(data)) {
+				m_type += "I";
+			} else {
+				union {
+					double d;
+					char c[8];
+				} primitiveLiteral = { data };
+
+				if (utils::IsLittleEndian()) {
+					primitiveLiteral.d = utils::SwapFloat64(data);
+				}
+
+				m_data.insert(m_data.end(), primitiveLiteral.c, primitiveLiteral.c + 8);
+				m_type += "d";
+			}
+			return this;
+		}
+
 		OscMessage* OscMessage::Push(int data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
@@ -49,6 +78,23 @@ namespace hekky {
 
 			m_data.insert(m_data.end(), primitiveLiteral.c, primitiveLiteral.c + 4);
 			m_type += "i";
+			return this;
+		}
+
+		OscMessage* OscMessage::Push(long long data) {
+			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
+
+			union {
+				long long i;
+				char c[8];
+			} primitiveLiteral = { data };
+
+			if (utils::IsLittleEndian()) {
+				primitiveLiteral.i = utils::SwapInt64(data);
+			}
+
+			m_data.insert(m_data.end(), primitiveLiteral.c, primitiveLiteral.c + 8);
+			m_type += "h";
 			return this;
 		}
 

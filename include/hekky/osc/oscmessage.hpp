@@ -14,10 +14,15 @@ namespace hekky {
 			OscMessage(const std::string& address);
 			~OscMessage();
 
+			// Binary blobs
+			OscMessage* Push(char* data, size_t size);
+
 			// Floating point number
 			OscMessage* Push(float data);
+			OscMessage* Push(double data);
 			// Integers
 			OscMessage* Push(int data);
+			OscMessage* Push(long long data);
 
 			// ASCII Strings
 			OscMessage* Push(std::string data);

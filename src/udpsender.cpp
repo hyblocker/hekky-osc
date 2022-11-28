@@ -44,7 +44,7 @@ namespace hekky {
             } else if (result == -1) {
 #ifdef HEKKYOSC_DOASSERTS
                 int errorCode = WSAGetLastError();
-                std::cout << "WSA Error code: " << errorCode << "\nFor more information, please visit https://learn.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-inet_pton#return-value.\n";
+                HEKKYOSC_ERR(std::string("WSA Error code: ") + std::to_string(errorCode) + "\nFor more information, please visit https://learn.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-inet_pton#return-value.\n");
 #endif
                 HEKKYOSC_ASSERT(result == -1, "Failed to set IP Address!");
                 return;
@@ -61,7 +61,7 @@ namespace hekky {
             else if (result == -1) {
 #ifdef HEKKYOSC_DOASSERTS
                 int errorCode = WSAGetLastError();
-                std::cout << "WSA Error code: " << errorCode << "\nFor more information, please visit https://learn.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-inet_pton#return-value.\n";
+                HEKKYOSC_ERR(std::string("WSA Error code: ") + std::to_string(errorCode)+ "\nFor more information, please visit https://learn.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-inet_pton#return-value.\n");
 #endif
                 HEKKYOSC_ASSERT(result == -1, "Failed to set IP Address!");
                 return;
@@ -73,7 +73,7 @@ namespace hekky {
             if (m_nativeSocket == INVALID_SOCKET) {
 #ifdef HEKKYOSC_DOASSERTS
                 int errorCode = WSAGetLastError();
-                std::cout << "WSA Error code: " << errorCode << "\nFor more information, please visit https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-socket#return-value.\n";
+                HEKKYOSC_ERR(std::string("WSA Error code: ") + std::to_string(errorCode) + "\nFor more information, please visit https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-socket#return-value.\n");
 #endif
                 HEKKYOSC_ASSERT(result == SOCKET_ERROR, "Failed to create network socket!");
                 return;
@@ -82,7 +82,7 @@ namespace hekky {
             if (result == SOCKET_ERROR) {
 #ifdef HEKKYOSC_DOASSERTS
                 int errorCode = WSAGetLastError();
-                std::cout << "WSA Error code: " << errorCode << "\nFor more information, please visit https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-bind#return-value.\n";
+                HEKKYOSC_ERR(std::string("WSA Error code: ") + std::to_string(errorCode) + "\nFor more information, please visit https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-bind#return-value.\n");
 #endif
                 HEKKYOSC_ASSERT(result == SOCKET_ERROR, "Failed to bind to network socket!");
                 return;

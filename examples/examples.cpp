@@ -5,7 +5,7 @@
 int main()
 {
     // Open a UDP socket, pointing to localhost on port 9000
-    auto udpSender = hekky::osc::UdpSender("127.0.0.1", 9000);
+    auto udpSender = hekky::osc::UdpSender("127.0.0.1", 9000, 9001);
 
     auto message = hekky::osc::OscMessage("/osc/test/int32");
     message.Push(12);

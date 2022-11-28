@@ -44,7 +44,7 @@ namespace hekky {
 			/// </summary>
 			/// <param name="ipAddress">Destination IP Address</param>
 			/// <param name="port">Destination port</param>
-			UdpSender(const std::string& ipAddress, uint32_t port, network::OSC_NetworkProtocol protocol = network::OSC_NetworkProtocol::UDP);
+			UdpSender(const std::string& ipAddress, uint32_t portOut, uint32_t portIn, network::OSC_NetworkProtocol protocol = network::OSC_NetworkProtocol::UDP);
 			/// <summary>
 			/// Destroys this UDP socket connection, if it's alive.
 			/// </summary>
@@ -75,7 +75,8 @@ namespace hekky {
 		private:
 			bool m_isAlive;
 			std::string m_address;
-			uint32_t m_port;
+			uint32_t m_portOut;
+			uint32_t m_portIn;
 
 			static uint64_t m_openSockets;
 

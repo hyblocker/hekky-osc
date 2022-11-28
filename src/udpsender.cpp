@@ -8,14 +8,14 @@ namespace hekky {
             return m_isAlive;
         }
 
-        UdpSender::UdpSender() : m_address(""), m_port(-1), m_isAlive(false)
+        UdpSender::UdpSender() : m_address(""), m_portOut(0), m_portIn(0), m_isAlive(false)
 #ifdef HEKKYOSC_WINDOWS
             , m_destinationAddress({ 0 }), m_localAddress({ 0 }), m_nativeSocket(INVALID_SOCKET)
 #endif
         {}
 
-        UdpSender::UdpSender(const std::string& ipAddress, uint32_t port, network::OSC_NetworkProtocol protocol)
-            : m_address(ipAddress), m_port(port)
+        UdpSender::UdpSender(const std::string& ipAddress, uint32_t portOut, uint32_t portIn, network::OSC_NetworkProtocol protocol)
+            : m_address(ipAddress), m_portOut(portOut), m_portIn(portIn)
 #ifdef HEKKYOSC_WINDOWS
             , m_destinationAddress({ 0 }), m_localAddress({ 0 }), m_nativeSocket(INVALID_SOCKET)
 #endif
@@ -37,19 +37,20 @@ namespace hekky {
 
             // Get localhost as a native network address
             m_localAddress.sin_family = AF_INET;
-            result = inet_pton(AF_INET, "127.0.0.1", &m_localAddress.sin_addr.s_addr);
-            if (result == 0) {
-                HEKKYOSC_ASSERT(result == 0, "Invalid IP Address!");
-                return;
-            } else if (result == -1) {
-#ifdef HEKKYOSC_DOASSERTS
-                int errorCode = WSAGetLastError();
-                HEKKYOSC_ERR(std::string("WSA Error code: ") + std::to_string(errorCode) + "\nFor more information, please visit https://learn.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-inet_pton#return-value.\n");
-#endif
-                HEKKYOSC_ASSERT(result == -1, "Failed to set IP Address!");
-                return;
-            }
-            m_localAddress.sin_port = htons(0);
+            m_localAddress.sin_addr.s_addr = INADDR_ANY;
+//             result = inet_pton(AF_INET, "127.0.0.1", &m_localAddress.sin_addr.s_addr);
+//             if (result == 0) {
+//                 HEKKYOSC_ASSERT(result == 0, "Invalid IP Address!");
+//                 return;
+//             } else if (result == -1) {
+// #ifdef HEKKYOSC_DOASSERTS
+//                 int errorCode = WSAGetLastError();
+//                 HEKKYOSC_ERR(std::string("WSA Error code: ") + std::to_string(errorCode) + "\nFor more information, please visit https://learn.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-inet_pton#return-value.\n");
+// #endif
+//                 HEKKYOSC_ASSERT(result == -1, "Failed to set IP Address!");
+//                 return;
+//             }
+            m_localAddress.sin_port = htons(m_portIn);
 
             // Get the destination as a native network address
             m_destinationAddress.sin_family = AF_INET;
@@ -66,7 +67,7 @@ namespace hekky {
                 HEKKYOSC_ASSERT(result == -1, "Failed to set IP Address!");
                 return;
             }
-            m_destinationAddress.sin_port = htons(port);
+            m_destinationAddress.sin_port = htons(m_portOut);
 
             // Open the network socket
             m_nativeSocket = socket(AF_INET, SOCK_DGRAM, protocol == network::OSC_NetworkProtocol::UDP ? IPPROTO_UDP : IPPROTO_TCP);

@@ -45,15 +45,15 @@ int main()
     // Pushes a 3-component float to /osc/vector/endpoint
     // This is one way you can represent vectors using OSC
     auto serialPacking = hekky::osc::OscMessage("/osc/vector/float32");
-    serialPacking.Push(1.4142135624f); // sqrt(2)
-    serialPacking.Push(3.1415926536f); // pi
-    serialPacking.Push(2.7182818285f); // e
-    udpSender.Send(serialPacking);
+serialPacking.Push(1.4142135624f); // sqrt(2)
+serialPacking.Push(3.1415926536f); // pi
+serialPacking.Push(2.7182818285f); // e
+udpSender.Send(serialPacking);
 
-    // Alternatively, you can encode the same message like this:
-    auto chainPacking = hekky::osc::OscMessage("/osc/vector/float32");
-    chainPacking.Push(1.4142135624f)->Push(3.1415926536f)->Push(2.7182818285f);
-    udpSender.Send(chainPacking);
+// Alternatively, you can encode the same message like this:
+auto chainPacking = hekky::osc::OscMessage("/osc/vector/float32");
+chainPacking.Push(1.4142135624f)->Push(3.1415926536f)->Push(2.7182818285f);
+udpSender.Send(chainPacking);
 
     // Closing it manually isn't needed, it gets closed via the destructor automatically!
     // udpSender.Close();

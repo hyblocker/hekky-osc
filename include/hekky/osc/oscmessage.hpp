@@ -22,6 +22,8 @@ namespace hekky {
 			OscMessage* PushInt32(int data);
 			OscMessage* PushInt64(long long data);
 
+			OscMessage* PushBoolean(bool data);
+
 			OscMessage* PushString(std::string data);
 			OscMessage* PushStringRef(const std::string& data);
 			OscMessage* PushCStyleString(char* data);
@@ -37,6 +39,7 @@ namespace hekky {
 			OscMessage* PushDouble(double data);
 			OscMessage* PushInt(int data);
 			OscMessage* PushLongLong(long long data);
+			OscMessage* PushBool(bool data);
 
 			// Binary blobs
 			OscMessage* Push(char* data, size_t size);

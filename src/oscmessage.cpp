@@ -98,7 +98,14 @@ namespace hekky {
 			return this;
 		}
 
-		OscMessage* OscMessage::Push(std::string data) {
+		OscMessage* OscMessage::PushBoolean(bool data) {
+			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
+
+			m_type += (data == true) ? "T" : "F";
+			return this;
+		}
+
+		OscMessage* OscMessage::PushString(std::string data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			std::copy(data.begin(), data.end(), std::back_inserter(m_data));

@@ -16,15 +16,15 @@ namespace hekky {
 			m_data.clear();
 		}
 
-		OscMessage* OscMessage::PushBlob(char* data, size_t size) {
+		OscMessage OscMessage::PushBlob(char* data, size_t size) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			m_data.insert(m_data.begin(), data, data + size);
 			m_type += "b";
-			return this;
+			return *this;
 		}
 
-		OscMessage* OscMessage::PushFloat32(float data) {
+		OscMessage OscMessage::PushFloat32(float data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			if (isinf(data)) {
@@ -42,10 +42,10 @@ namespace hekky {
 				m_data.insert(m_data.end(), primitiveLiteral.c, primitiveLiteral.c + 4);
 				m_type += "f";
 			}
-			return this;
+			return *this;
 		}
 
-		OscMessage* OscMessage::PushFloat64 (double data) {
+		OscMessage OscMessage::PushFloat64 (double data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			if (isinf(data)) {
@@ -63,10 +63,10 @@ namespace hekky {
 				m_data.insert(m_data.end(), primitiveLiteral.c, primitiveLiteral.c + 8);
 				m_type += "d";
 			}
-			return this;
+			return *this;
 		}
 
-		OscMessage* OscMessage::PushInt32(int data) {
+		OscMessage OscMessage::PushInt32(int data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			union {
@@ -80,10 +80,10 @@ namespace hekky {
 
 			m_data.insert(m_data.end(), primitiveLiteral.c, primitiveLiteral.c + 4);
 			m_type += "i";
-			return this;
+			return *this;
 		}
 
-		OscMessage* OscMessage::PushInt64(long long data) {
+		OscMessage OscMessage::PushInt64(long long data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			union {
@@ -97,149 +97,149 @@ namespace hekky {
 
 			m_data.insert(m_data.end(), primitiveLiteral.c, primitiveLiteral.c + 8);
 			m_type += "h";
-			return this;
+			return *this;
 		}
 
-		OscMessage* OscMessage::PushBoolean(bool data) {
+		OscMessage OscMessage::PushBoolean(bool data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			m_type += (data == true) ? "T" : "F";
-			return this;
+			return *this;
 		}
 
-		OscMessage* OscMessage::PushString(std::string data) {
+		OscMessage OscMessage::PushString(std::string data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			std::copy(data.begin(), data.end(), std::back_inserter(m_data));
 			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - data.length(), 0);
 			m_type += "s";
-			return this;
+			return *this;
 		}
 
-		OscMessage* OscMessage::PushStringRef(const std::string& data) {
+		OscMessage OscMessage::PushStringRef(const std::string& data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			std::copy(data.begin(), data.end(), std::back_inserter(m_data));
 			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - data.length(), 0);
 			m_type += "s";
-			return this;
+			return *this;
 		}
 
-		OscMessage* OscMessage::PushCStyleStringRef(const char* data) {
+		OscMessage OscMessage::PushCStyleStringRef(const char* data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			m_data.insert(m_data.end(), data, data + strlen(data));
 			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - strlen(data), 0);
 			m_type += "s";
-			return this;
+			return *this;
 		}
 
-		OscMessage* OscMessage::PushCStyleString(char* data) {
+		OscMessage OscMessage::PushCStyleString(char* data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			m_data.insert(m_data.end(), data, data + strlen(data));
 			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - strlen(data), 0);
 			m_type += "s";
-			return this;
+			return *this;
 		}
 
-		OscMessage* OscMessage::PushWString(std::wstring data) {
+		OscMessage OscMessage::PushWString(std::wstring data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			std::copy(data.begin(), data.end(), std::back_inserter(m_data));
 			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - data.length(), 0);
 			m_type += "s";
-			return this;
+			return *this;
 		}
 
-		OscMessage* OscMessage::PushWStringRef(const std::wstring& data) {
+		OscMessage OscMessage::PushWStringRef(const std::wstring& data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			std::copy(data.begin(), data.end(), std::back_inserter(m_data));
 			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - data.length(), 0);
 			m_type += "s";
-			return this;
+			return *this;
 		}
 
-		OscMessage* OscMessage::PushCStyleWStringRef(const wchar_t* data) {
+		OscMessage OscMessage::PushCStyleWStringRef(const wchar_t* data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			m_data.insert(m_data.end(), data, data + wcslen(data));
 			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - wcslen(data), 0);
 			m_type += "s";
-			return this;
+			return *this;
 		}
 
-		OscMessage* OscMessage::PushCStyleWString(wchar_t* data) {
+		OscMessage OscMessage::PushCStyleWString(wchar_t* data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			m_data.insert(m_data.end(), data, data + wcslen(data));
 			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - wcslen(data), 0);
 			m_type += "s";
-			return this;
+			return *this;
 		}
 
 		// Aliases
-		OscMessage* OscMessage::PushFloat(float data) {
+		OscMessage OscMessage::PushFloat(float data) {
 			return PushFloat32(data);
 		}
-		OscMessage* OscMessage::PushDouble(double data) {
+		OscMessage OscMessage::PushDouble(double data) {
 			return PushFloat64(data);
 		}
-		OscMessage* OscMessage::PushInt(int data) {
+		OscMessage OscMessage::PushInt(int data) {
 			return PushInt32(data);
 		}
-		OscMessage* OscMessage::PushLongLong(long long data) {
+		OscMessage OscMessage::PushLongLong(long long data) {
 			return PushInt64(data);
 		}
 
 		// Generic aliases
-		OscMessage* OscMessage::Push(float data) {
+		OscMessage OscMessage::Push(float data) {
 			return PushFloat32(data);
 		}
-		OscMessage* OscMessage::Push(double data) {
+		OscMessage OscMessage::Push(double data) {
 			return PushFloat64(data);
 		}
-		OscMessage* OscMessage::Push(int data) {
+		OscMessage OscMessage::Push(int data) {
 			return PushInt32(data);
 		}
-		OscMessage* OscMessage::Push(long long data) {
+		OscMessage OscMessage::Push(long long data) {
 			return PushInt64(data);
 		}
-		OscMessage* OscMessage::PushBool(bool data) {
+		OscMessage OscMessage::PushBool(bool data) {
 			return PushBoolean(data);
 		}
 
-		OscMessage* OscMessage::Push(std::string data) {
+		OscMessage OscMessage::Push(std::string data) {
 			return PushString(data);
 		}
-		OscMessage* OscMessage::Push(const std::string& data) {
+		OscMessage OscMessage::Push(const std::string& data) {
 			return PushStringRef(data);
 		}
-		OscMessage* OscMessage::Push(char* data) {
+		OscMessage OscMessage::Push(char* data) {
 			return PushCStyleString(data);
 		}
 
-		OscMessage* OscMessage::Push(const char* data) {
+		OscMessage OscMessage::Push(const char* data) {
 			return PushCStyleStringRef(data);
 		}
 
 		// Wide strings
-		OscMessage* OscMessage::Push(std::wstring data) {
+		OscMessage OscMessage::Push(std::wstring data) {
 			return PushWString(data);
 		}
-		OscMessage* OscMessage::Push(const std::wstring& data) {
+		OscMessage OscMessage::Push(const std::wstring& data) {
 			return PushWStringRef(data);
 		}
-		OscMessage* OscMessage::Push(wchar_t* data) {
+		OscMessage OscMessage::Push(wchar_t* data) {
 			return PushCStyleWString(data);
 		}
-		OscMessage* OscMessage::Push(const wchar_t* data) {
+		OscMessage OscMessage::Push(const wchar_t* data) {
 			return PushCStyleWStringRef(data);
 		}
 
 		// Blob
-		OscMessage* OscMessage::Push(char* data, size_t size) {
+		OscMessage OscMessage::Push(char* data, size_t size) {
 			return PushBlob(data, size);
 		}
 

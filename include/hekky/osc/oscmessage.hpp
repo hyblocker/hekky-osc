@@ -15,57 +15,57 @@ namespace hekky {
 			~OscMessage();
 
 			// Explicit Push functions
-			OscMessage* PushBlob(char* data, size_t size);
+			OscMessage PushBlob(char* data, size_t size);
 
-			OscMessage* PushFloat32(float data);
-			OscMessage* PushFloat64(double data);
-			OscMessage* PushInt32(int data);
-			OscMessage* PushInt64(long long data);
+			OscMessage PushFloat32(float data);
+			OscMessage PushFloat64(double data);
+			OscMessage PushInt32(int data);
+			OscMessage PushInt64(long long data);
 
-			OscMessage* PushBoolean(bool data);
+			OscMessage PushBoolean(bool data);
 
-			OscMessage* PushString(std::string data);
-			OscMessage* PushStringRef(const std::string& data);
-			OscMessage* PushCStyleString(char* data);
-			OscMessage* PushCStyleStringRef(const char* data);
+			OscMessage PushString(std::string data);
+			OscMessage PushStringRef(const std::string& data);
+			OscMessage PushCStyleString(char* data);
+			OscMessage PushCStyleStringRef(const char* data);
 
-			OscMessage* PushWString(std::wstring data);
-			OscMessage* PushWStringRef(const std::wstring& data);
-			OscMessage* PushCStyleWString(wchar_t* data);
-			OscMessage* PushCStyleWStringRef(const wchar_t* data);
+			OscMessage PushWString(std::wstring data);
+			OscMessage PushWStringRef(const std::wstring& data);
+			OscMessage PushCStyleWString(wchar_t* data);
+			OscMessage PushCStyleWStringRef(const wchar_t* data);
 
 			// Aliases
-			OscMessage* PushFloat(float data);
-			OscMessage* PushDouble(double data);
-			OscMessage* PushInt(int data);
-			OscMessage* PushLongLong(long long data);
-			OscMessage* PushBool(bool data);
+			OscMessage PushFloat(float data);
+			OscMessage PushDouble(double data);
+			OscMessage PushInt(int data);
+			OscMessage PushLongLong(long long data);
+			OscMessage PushBool(bool data);
 
 			// Binary blobs
-			OscMessage* Push(char* data, size_t size);
+			OscMessage Push(char* data, size_t size);
 
 			// Floating point number
-			OscMessage* Push(float data);
-			OscMessage* Push(double data);
+			OscMessage Push(float data);
+			OscMessage Push(double data);
 
 			// Integers
-			OscMessage* Push(int data);
-			OscMessage* Push(long long data);
+			OscMessage Push(int data);
+			OscMessage Push(long long data);
 
 			// ASCII Strings
-			OscMessage* Push(std::string data);
-			OscMessage* Push(const std::string& data);
-			OscMessage* Push(char* data);
-			OscMessage* Push(const char* data);
+			OscMessage Push(std::string data);
+			OscMessage Push(const std::string& data);
+			OscMessage Push(char* data);
+			OscMessage Push(const char* data);
 			
 			// Wide strings
-			OscMessage* Push(std::wstring data);
-			OscMessage* Push(const std::wstring& data);
-			OscMessage* Push(wchar_t* data);
-			OscMessage* Push(const wchar_t* data);
+			OscMessage Push(std::wstring data);
+			OscMessage Push(const std::wstring& data);
+			OscMessage Push(wchar_t* data);
+			OscMessage Push(const wchar_t* data);
 
 			template<typename T>
-			OscMessage* Push(T data) {
+			OscMessage Push(T data) {
 				HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 				return PushBlob(data, sizeof(data));

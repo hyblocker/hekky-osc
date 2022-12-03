@@ -32,7 +32,7 @@ int main()
 
     // Alternatively, you can encode the same message like this:
     auto chainPacking = hekky::osc::OscMessage("/osc/vector/float32");
-    chainPacking.Push(1.4142135624f)->Push(3.1415926536f)->Push(2.7182818285f);
+    chainPacking.Push(1.4142135624f).Push(3.1415926536f).Push(2.7182818285f);
     udpSender.Send(chainPacking);
 
     // Closing it manually isn't needed, it gets closed via the destructor automatically!

@@ -14,7 +14,7 @@ namespace hekky {
 			m_data.clear();
 		}
 
-		OscMessage* OscMessage::Push(char* data, size_t size) {
+		OscMessage* OscMessage::PushBlob(char* data, size_t size) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			m_data.insert(m_data.begin(), data, data + size);
@@ -22,7 +22,7 @@ namespace hekky {
 			return this;
 		}
 
-		OscMessage* OscMessage::Push(float data) {
+		OscMessage* OscMessage::PushFloat32(float data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			if (isinf(data)) {
@@ -43,7 +43,7 @@ namespace hekky {
 			return this;
 		}
 
-		OscMessage* OscMessage::Push(double data) {
+		OscMessage* OscMessage::PushFloat64 (double data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			if (isinf(data)) {
@@ -64,7 +64,7 @@ namespace hekky {
 			return this;
 		}
 
-		OscMessage* OscMessage::Push(int data) {
+		OscMessage* OscMessage::PushInt32(int data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			union {
@@ -81,7 +81,7 @@ namespace hekky {
 			return this;
 		}
 
-		OscMessage* OscMessage::Push(long long data) {
+		OscMessage* OscMessage::PushInt64(long long data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			union {
@@ -107,69 +107,134 @@ namespace hekky {
 			return this;
 		}
 
-		OscMessage* OscMessage::Push(const std::string& data) {
+		OscMessage* OscMessage::PushStringRef(const std::string& data) {
 			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 			std::copy(data.begin(), data.end(), std::back_inserter(m_data));
 			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - data.length(), 0);
 			m_type += "s";
 			return this;
+		}
+
+		OscMessage* OscMessage::PushCStyleStringRef(const char* data) {
+			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
+
+			m_data.insert(m_data.end(), data, data + strlen(data));
+			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - strlen(data), 0);
+			m_type += "s";
+			return this;
+		}
+
+		OscMessage* OscMessage::PushCStyleString(char* data) {
+			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
+
+			m_data.insert(m_data.end(), data, data + strlen(data));
+			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - strlen(data), 0);
+			m_type += "s";
+			return this;
+		}
+
+		OscMessage* OscMessage::PushWString(std::wstring data) {
+			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
+
+			std::copy(data.begin(), data.end(), std::back_inserter(m_data));
+			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - data.length(), 0);
+			m_type += "s";
+			return this;
+		}
+
+		OscMessage* OscMessage::PushWStringRef(const std::wstring& data) {
+			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
+
+			std::copy(data.begin(), data.end(), std::back_inserter(m_data));
+			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - data.length(), 0);
+			m_type += "s";
+			return this;
+		}
+
+		OscMessage* OscMessage::PushCStyleWStringRef(const wchar_t* data) {
+			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
+
+			m_data.insert(m_data.end(), data, data + wcslen(data));
+			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - wcslen(data), 0);
+			m_type += "s";
+			return this;
+		}
+
+		OscMessage* OscMessage::PushCStyleWString(wchar_t* data) {
+			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
+
+			m_data.insert(m_data.end(), data, data + wcslen(data));
+			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - wcslen(data), 0);
+			m_type += "s";
+			return this;
+		}
+
+		// Aliases
+		OscMessage* OscMessage::PushFloat(float data) {
+			return PushFloat32(data);
+		}
+		OscMessage* OscMessage::PushDouble(double data) {
+			return PushFloat64(data);
+		}
+		OscMessage* OscMessage::PushInt(int data) {
+			return PushInt32(data);
+		}
+		OscMessage* OscMessage::PushLongLong(long long data) {
+			return PushInt64(data);
+		}
+
+		// Generic aliases
+		OscMessage* OscMessage::Push(float data) {
+			return PushFloat32(data);
+		}
+		OscMessage* OscMessage::Push(double data) {
+			return PushFloat64(data);
+		}
+		OscMessage* OscMessage::Push(int data) {
+			return PushInt32(data);
+		}
+		OscMessage* OscMessage::Push(long long data) {
+			return PushInt64(data);
+		}
+		OscMessage* OscMessage::PushBool(bool data) {
+			return PushBoolean(data);
+		}
+
+		OscMessage* OscMessage::Push(std::string data) {
+			return PushString(data);
+		}
+		OscMessage* OscMessage::Push(const std::string& data) {
+			return PushStringRef(data);
+		}
+		OscMessage* OscMessage::Push(char* data) {
+			return PushCStyleString(data);
 		}
 
 		OscMessage* OscMessage::Push(const char* data) {
-			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
-
-			m_data.insert(m_data.end(), data, data + strlen(data));
-			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - strlen(data), 0);
-			m_type += "s";
-			return this;
+			return PushCStyleStringRef(data);
 		}
 
-		OscMessage* OscMessage::Push(char* data) {
-			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
-
-			m_data.insert(m_data.end(), data, data + strlen(data));
-			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - strlen(data), 0);
-			m_type += "s";
-			return this;
-		}
-
+		// Wide strings
 		OscMessage* OscMessage::Push(std::wstring data) {
-			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
-
-			std::copy(data.begin(), data.end(), std::back_inserter(m_data));
-			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - data.length(), 0);
-			m_type += "s";
-			return this;
+			return PushWString(data);
 		}
-
 		OscMessage* OscMessage::Push(const std::wstring& data) {
-			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
-
-			std::copy(data.begin(), data.end(), std::back_inserter(m_data));
-			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - data.length(), 0);
-			m_type += "s";
-			return this;
+			return PushWStringRef(data);
 		}
-
-		OscMessage* OscMessage::Push(const wchar_t* data) {
-			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
-
-			m_data.insert(m_data.end(), data, data + wcslen(data));
-			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - wcslen(data), 0);
-			m_type += "s";
-			return this;
-		}
-
 		OscMessage* OscMessage::Push(wchar_t* data) {
-			HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
-
-			m_data.insert(m_data.end(), data, data + wcslen(data));
-			m_data.insert(m_data.end(), utils::GetAlignedStringLength(data) - wcslen(data), 0);
-			m_type += "s";
-			return this;
+			return PushCStyleWString(data);
+		}
+		OscMessage* OscMessage::Push(const wchar_t* data) {
+			return PushCStyleWStringRef(data);
 		}
 
+		// Blob
+		OscMessage* OscMessage::Push(char* data, size_t size) {
+			return PushBlob(data, size);
+		}
+
+		// Internal function
 		char* OscMessage::GetBytes(int& size) {
 			std::vector<char> headerData;
 

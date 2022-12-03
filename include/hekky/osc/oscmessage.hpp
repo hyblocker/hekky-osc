@@ -68,12 +68,8 @@ namespace hekky {
 			OscMessage* Push(T data) {
 				HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
-				// @TODO: Actually encode data
+				return PushBlob(data, sizeof(data));
 
-				// @NOTE: Probably going to treat generics as a binary blob
-				auto type = typeid(data).name();
-				std::cout << type << "\t\t" << data << std::endl;
-				return this;
 			}
 
 		private:

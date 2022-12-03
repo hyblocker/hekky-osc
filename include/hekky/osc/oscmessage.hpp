@@ -69,7 +69,10 @@ namespace hekky {
 				HEKKYOSC_ASSERT(m_readonly == false, "Cannot write to a message packet once sent to the network! Construct a new message instead.");
 
 				return PushBlob(data, sizeof(data));
+			}
 
+			inline const std::string& GetAddress() const {
+				return m_address;
 			}
 
 		private:

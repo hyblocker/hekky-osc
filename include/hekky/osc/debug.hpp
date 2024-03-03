@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hekky/osc/platform.hpp"
+#include "platform.hpp"
 
 #if _DEBUG
 #if defined(HEKKYOSC_WINDOWS)

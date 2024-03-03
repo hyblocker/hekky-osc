@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hekky/osc/debug.hpp"
+#include "debug.hpp"
 
 #ifndef HEKKYOSC_LOG
 #define HEKKYOSC_LOG(x) std::cout << x

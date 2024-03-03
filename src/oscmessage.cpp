@@ -1,13 +1,14 @@
-#include "hekky/osc/oscmessage.hpp"
-#include "hekky/osc/utils.hpp"
+#include "oscmessage.hpp"
+#include "utils.hpp"
 #include <math.h>
+#include <string.h>
 
 namespace hekky {
 	namespace osc {
 		OscMessage::OscMessage(const std::string& address)
 			: m_address(address), m_type(","), m_readonly(false)
 		{
-			HEKKYOSC_ASSERT(address.length > 1, "The address is invalid!");
+			HEKKYOSC_ASSERT(address.length() > 1, "The address is invalid!");
 			HEKKYOSC_ASSERT(address[0] == '/', "The address is invalid! It should start with a '/'!");
 			m_data.reserve(constants::OSC_MINIMUM_PACKET_BYTES);
 		}

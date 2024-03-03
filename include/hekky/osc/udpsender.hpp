@@ -1,9 +1,9 @@
 #pragma once
 
-#include "hekky/osc/platform.hpp"
-#include "hekky/osc/asserts.hpp"
-#include "hekky/osc/oscpacket.hpp"
-#include "hekky/osc/oscmessage.hpp"
+#include "platform.hpp"
+#include "asserts.hpp"
+#include "oscpacket.hpp"
+#include "oscmessage.hpp"
 
 #include <string>
 
@@ -16,6 +16,22 @@
 
 // Tell the linker to link to the winsock library
 #pragma comment(lib, "Ws2_32.lib")
+
+#endif
+
+#if defined(HEKKYOSC_LINUX) || defined(HEKKYOSC_MAC)
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+#include <stdlib.h>
+#include <sys/time.h>
+#include <errno.h>
 
 #endif
 
@@ -79,14 +95,14 @@ namespace hekky {
 			uint32_t m_portIn;
 
 			static uint64_t m_openSockets;
-
-#ifdef HEKKYOSC_WINDOWS
+#if defined(HEKKYOSC_WINDOWS)
 			SOCKET m_nativeSocket;
-
+#endif
+#if defined(HEKKYOSC_LINUX) || defined(HEKKYOSC_MAC)
+			int m_nativeSocket;
+#endif
 			sockaddr_in m_destinationAddress;
 			sockaddr_in m_localAddress;
-
-#endif
 		};
 	}
 }

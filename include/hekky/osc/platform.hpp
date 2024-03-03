@@ -1,5 +1,5 @@
 #pragma once
-
+//#define HEKKYOSC_MAC
 #if _WIN32
 	#ifdef _WIN64
 		#define HEKKYOSC_WINDOWS
@@ -11,13 +11,13 @@
 	#define HEKKYOSC_ANDROID
 	#error "Android is not supported!"
 #elif defined(__linux__)
-	#define HEKKYOSC_LINUX
-	#error "Linux is not supported!"
+		#define HEKKYOSC_LINUX
+#elif defined(__APPLE__)
+		#define HEKKYOSC_MAC
 #else
 	// Sorry, we do not support whatever you're trying to use!
 	#error "Unknown Platform!"
 #endif
-
 #if _DEBUG
 	#define HEKKYOSC_DOASSERTS
 #endif

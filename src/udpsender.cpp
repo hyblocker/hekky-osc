@@ -1,5 +1,4 @@
 #include "hekky-osc.hpp"
-
 namespace hekky {
     namespace osc {
         uint64_t UdpSender::m_openSockets = 0;
@@ -21,8 +20,8 @@ namespace hekky {
 #endif
         {
             m_isAlive = false;
-#ifdef HEKKYOSC_WINDOWS
             int result = 0;
+#ifdef HEKKYOSC_WINDOWS
             if (m_openSockets < 1) {
                 WSADATA wsaData;
                 // @TODO: Skip if other connections are open
@@ -38,18 +37,6 @@ namespace hekky {
             // Get localhost as a native network address
             m_localAddress.sin_family = AF_INET;
             m_localAddress.sin_addr.s_addr = INADDR_ANY;
-//             result = inet_pton(AF_INET, "127.0.0.1", &m_localAddress.sin_addr.s_addr);
-//             if (result == 0) {
-//                 HEKKYOSC_ASSERT(result == 0, "Invalid IP Address!");
-//                 return;
-//             } else if (result == -1) {
-// #ifdef HEKKYOSC_DOASSERTS
-//                 int errorCode = WSAGetLastError();
-//                 HEKKYOSC_ERR(std::string("WSA Error code: ") + std::to_string(errorCode) + "\nFor more information, please visit https://learn.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-inet_pton#return-value.\n");
-// #endif
-//                 HEKKYOSC_ASSERT(result == -1, "Failed to set IP Address!");
-//                 return;
-//             }
             m_localAddress.sin_port = htons(m_portIn);
 
             // Get the destination as a native network address
@@ -92,6 +79,38 @@ namespace hekky {
             // If we reached this point, we have successfully initialized a network socket!
             m_isAlive = true;
 #endif
+#if defined(HEKKYOSC_LINUX) || defined(HEKKYOSC_MAC)
+            struct hostent *h;
+            //check ip adress
+            h = gethostbyname (m_address.c_str());
+            if (h == NULL) {
+                HEKKYOSC_ASSERT(result == 0, "Invalid IP Address!");
+                return;
+                //exit (EXIT_FAILURE);
+            }
+                m_openSockets++;
+            m_destinationAddress.sin_family = h->h_addrtype;
+            memcpy ( (char *) &m_destinationAddress.sin_addr.s_addr, h->h_addr_list[0], h->h_length);
+            m_destinationAddress.sin_port = htons (m_portOut);
+            // Open the network socket
+            m_nativeSocket = socket (AF_INET, SOCK_DGRAM, 0);
+            if (m_nativeSocket < 0) {
+                HEKKYOSC_ASSERT(result == SOCKET_ERROR, "Cannot open Socket!");
+                return;
+                //exit (EXIT_FAILURE);
+            }
+            //Bind network socket
+            m_localAddress.sin_family = AF_INET;
+            m_localAddress.sin_addr.s_addr = htonl (INADDR_ANY);
+            m_localAddress.sin_port = htons (0);
+            result = bind ( m_nativeSocket, (struct sockaddr *) &m_localAddress, sizeof (m_localAddress) );
+            if (result < 0) {
+                HEKKYOSC_ASSERT(result == SOCKET_ERROR, "Failed to bind to network socket!");
+                return;
+                //exit (EXIT_FAILURE);
+            }
+                m_isAlive = true;
+#endif
         }
 
         UdpSender::~UdpSender() {
@@ -117,10 +136,16 @@ namespace hekky {
                 WSACleanup();
             }
 #endif
+#if defined(HEKKYOSC_LINUX) || defined(HEKKYOSC_MAC)
+            if (m_isAlive) {
+                close(m_nativeSocket);
+                m_isAlive = false;
+            }
+#endif
+
         }
 
         void UdpSender::Send(char* data, int size) {
-#ifdef HEKKYOSC_WINDOWS
             HEKKYOSC_ASSERT(m_nativeSocket != INVALID_SOCKET, "Tried sending a packet, but the native socket is null! Has the socket been initialized?");
             HEKKYOSC_ASSERT(m_isAlive == true, "Tried sending a packet, but the server isn't running!");
 
@@ -128,13 +153,16 @@ namespace hekky {
             if (size < 1)
                 return;
 
+#ifdef HEKKYOSC_WINDOWS
             // Send data over the socket
             sendto(m_nativeSocket, data, size, 0, (sockaddr*)&m_destinationAddress, sizeof(m_destinationAddress));
+#endif
+#if defined(HEKKYOSC_LINUX) || defined(HEKKYOSC_MAC)
+sendto (m_nativeSocket, data, size, 0, (struct sockaddr *) &m_destinationAddress, sizeof (m_destinationAddress));
 #endif
         }
 
         void UdpSender::Send(OscPacket& packet) {
-#ifdef HEKKYOSC_WINDOWS
             HEKKYOSC_ASSERT(m_nativeSocket != INVALID_SOCKET, "Tried sending a packet, but the native socket is null! Has the socket been initialized?");
             HEKKYOSC_ASSERT(m_isAlive == true, "Tried sending a packet, but the server isn't running!");
 
@@ -143,7 +171,6 @@ namespace hekky {
 
             // Send data over the socket
             Send(data, size);
-#endif
         }
     }
 }

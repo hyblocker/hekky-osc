@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "hekky/osc/asserts.hpp"
-#include "hekky/osc/oscpacket.hpp"
+#include "asserts.hpp"
+#include "oscpacket.hpp"
 
 namespace hekky {
 	namespace osc {

@@ -1,6 +1,7 @@
-#include "hekky/osc/oscmessage.hpp"
-#include "hekky/osc/utils.hpp"
+#include "oscmessage.hpp"
+#include "utils.hpp"
 #include <math.h>
+#include <string.h>
 
 namespace hekky {
 	namespace osc {

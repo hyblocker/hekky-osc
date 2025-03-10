@@ -1,4 +1,5 @@
 #include "hekky/osc/utils.hpp"
+#include <stdlib.h>
 
 namespace hekky {
 	namespace osc {
@@ -12,15 +13,6 @@ namespace hekky {
 				uint64_t len = string.length() + (4 - string.length() % 4);
 				if (len <= string.length()) len += 4;
 				return len;
-			}
-
-			bool IsLittleEndian() {
-				union {
-					uint32_t i;
-					char c[4];
-				} endianCheck = { 0x01020304 };
-
-				return endianCheck.c[0] != 1;
 			}
 
 			uint32_t SwapInt32(uint32_t num) {

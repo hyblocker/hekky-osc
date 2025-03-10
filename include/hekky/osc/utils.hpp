@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <bit>
 
 namespace hekky {
 	namespace osc {
@@ -22,7 +23,9 @@ namespace hekky {
 			/// Returns whether the current system is using Big Endian or Little-Endian
 			/// </summary>
 			/// <returns>System Endianness</returns>
-			bool IsLittleEndian();
+			constexpr bool IsLittleEndian() noexcept {
+				return std::endian::native == std::endian::little;
+			}
 
 			/// <summary>
 			/// Swaps 4 bytes

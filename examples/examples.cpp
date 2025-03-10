@@ -1,9 +1,8 @@
-#include <iostream>
+#include <stdio.h>
 
 #include "hekky-osc.hpp"
 
-int main()
-{
+void OscExample() {
     // Open a UDP socket, pointing to localhost on port 9000
     auto udpSender = hekky::osc::UdpSender("127.0.0.1", 9000, 9001);
 
@@ -38,5 +37,17 @@ int main()
     // Closing it manually isn't needed, it gets closed via the destructor automatically!
     // udpSender.Close();
 
-    std::cout << "Done!\n";
+    printf("Done (OSC)!\n");
+}
+
+void OscQueryExample() {
+
+
+
+    printf("Done (OSC Query)!\n");
+}
+
+int main() {
+    OscExample();
+    OscQueryExample();
 }

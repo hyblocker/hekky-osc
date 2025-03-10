@@ -5,7 +5,7 @@
 namespace hekky {
 	namespace osc {
 		OscMessage::OscMessage(const std::string& address)
-			: m_address(address), m_type(","), m_readonly(false)
+			: m_readonly(false), m_address(address),  m_type(",")
 		{
 			HEKKYOSC_ASSERT(address.length() > 1, "The address is invalid!");
 			HEKKYOSC_ASSERT(address[0] == '/', "The address is invalid! It should start with a '/'!");
@@ -245,7 +245,7 @@ namespace hekky {
 
 		// Internal function
 		char* OscMessage::GetBytes(int& size) {
-			std::vector<char> headerData;
+			std::vector<char> headerData(m_address.size() + m_type.size() + m_data.size()); // reserve size for everything to minimise allocations
 
 			// Append address
 			std::copy(m_address.begin(), m_address.end(), std::back_inserter(headerData));

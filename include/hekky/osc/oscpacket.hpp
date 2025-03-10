@@ -15,7 +15,7 @@ namespace hekky {
 		};
 
 		namespace constants {
-			const static uint64_t OSC_MINIMUM_PACKET_BYTES = 8;
+			constexpr uint64_t OSC_MINIMUM_PACKET_BYTES = 8;
 		}
 	}
 }

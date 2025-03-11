@@ -6,7 +6,7 @@ project("vendor")
 
 # libhv
 message("Adding libhv...")
-set(LIBHV_DIR ${CMAKE_SOURCE_DIR}/vendor/libhv/src)
+set(LIBHV_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libhv/src)
 include(ExternalProject)
 ExternalProject_Add(libhv
     PREFIX ${CMAKE_BINARY_DIR}/libhv

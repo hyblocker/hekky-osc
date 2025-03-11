@@ -43,8 +43,8 @@ endif ()
 message(STATUS "Compilation set for ${PLATFORM}bits architectures.")
 
 # Add source files
-file(GLOB_RECURSE SOURCES_API     ${CMAKE_SOURCE_DIR}/src/overlay "*.c" "*.h" "*.hpp" "*.cpp")
-file(GLOB_RECURSE SOURCES_HEADERS ${CMAKE_SOURCE_DIR}/src/overlay "*.h" "*.hpp")
+file(GLOB_RECURSE SOURCES_API     ${CMAKE_CURRENT_SOURCE_DIR}/ "*.c" "*.h" "*.hpp" "*.cpp")
+file(GLOB_RECURSE SOURCES_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/ "*.h" "*.hpp")
 
 foreach(SOURCE IN ITEMS ${SOURCES_API})
     get_filename_component(SOURCE_PATH "${SOURCE}" PATH)
@@ -58,9 +58,9 @@ add_executable(HekkyOSC_Tests ${SOURCES_API} ${SOURCES_HEADERS})
 GroupSourcesByFolder(HekkyOSC_Tests)
 
 target_include_directories(HekkyOSC_Tests
-    PRIVATE ${CMAKE_SOURCE_DIR}
-    PRIVATE ${CMAKE_SOURCE_DIR}/tests
-    PUBLIC ${CMAKE_SOURCE_DIR}/vendor
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../include
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../vendor
 )
 
 target_link_libraries(HekkyOSC_Tests

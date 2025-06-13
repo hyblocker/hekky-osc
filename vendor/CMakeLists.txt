@@ -11,7 +11,7 @@ include(ExternalProject)
 ExternalProject_Add(libhv
     PREFIX ${CMAKE_BINARY_DIR}/libhv
     GIT_REPOSITORY https://github.com/ithewei/libhv.git
-    GIT_TAG master
+    GIT_TAG v1.3.3
     SOURCE_DIR ${LIBHV_DIR}
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/libhv_install
@@ -19,6 +19,8 @@ ExternalProject_Add(libhv
         -DBUILD_STATIC=ON
         -DBUILD_EXAMPLES=OFF
         -DBUILD_UNITTEST=OFF
+    BUILD_ALWAYS OFF
+    UPDATE_DISCONNECTED ON
 )
 
 # Assign solution dirs 
